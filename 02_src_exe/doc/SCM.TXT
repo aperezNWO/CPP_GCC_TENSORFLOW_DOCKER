@@ -4,12 +4,12 @@
 
 1) TOOL CHAIN : C:\msys64\ucrt64\bin (CAMBIAR PATH=)
 
-2) MSYS 
- 
-	pacman -S mingw-w64-x86_64-toolchain
-	pacman -S mingw-w64-x86_64-tesseract
-	pacman -S mingw-w64-x86_64-tesseract-data-eng
+2) INSTALLERS
 
+	1) https://www.tensorflow.org/install/lang_c?hl=es-419
+
+    2) ASK A.I. SETUP DOCKER
+    
 3) COMPILATION EXAMPLE
 
     g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp -o cpp_web_server.exe -mconsole -lws2_32
@@ -26,6 +26,7 @@ git add README.md
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.0]" -m"1) initial commit"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.1]" -m"1) IMPORT FROM CPP_GCC_TEMPLATE_DOCKER"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.2]" -m"1) CPP WEB SERVER IMPLEMENTATION"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.3]" -m"1) DOCKER REMOTE IMPLEMENTATION"
 git branch -M main
 git remote add origin https://github.com/aperezNWO/CPP_GCC_TENSORFLOW_DOCKER.git
 git push -u origin main
@@ -95,8 +96,9 @@ docker push apereznwogmail/cpp_gcc_tensorflow_docker:latest
 // GIT -- SAVE CHANGES
 ////////////////////////////////////////////////////////////////
 
+-- tensorflow.dll exeeds git storage
 git add * 
-git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.3]" -m"1) DOCKER REMOTE IMPLEMENTATION"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.4]" -m"1) LEGACY CODE INTEGRATION"
 git push
 git pull	
 

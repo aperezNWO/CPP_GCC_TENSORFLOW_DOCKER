@@ -1,4 +1,2 @@
-src/__tesseract/_tesseract_cpp/include/
-src/__tesseract/_tesseract_cpp/lib/
-src/__tesseract/_tesseract_cpp/__dist/tesseract.dll
-src/__tesseract/_tesseract_cpp/__dist/*.lib
+02_src_exe/__test/tensorflow.dll
+02_src_exe/lib/tensorflow.dll
