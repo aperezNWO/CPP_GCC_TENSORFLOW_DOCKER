@@ -1,0 +1,25 @@
+////////////////////////////////////////////////////////////////
+				      	STRATEGY
+////////////////////////////////////////////////////////////////
+
+-- [_] app description endpoint.
+
+-- [_] import tesseract windows files.
+
+-- [_] COMPILE tesseract windows DLL.
+
+-- [_] REMOVE ALGORITHM.DLL DEPENDENCY.
+
+-- [_] add ALGORITHM.CPP FILE.
+
+-- [_] TURN INTO EXECUTABLE.
+
+-- [_] MERGE WITH CPP_WEB_SERVER.
+
+-- [_] ADD .net core fileupload functionaltity.
+
+-- [_] LINUX / DOCKER COMMAND LINES.
+
+
+
+////////////////////////////////////////////////////////////////
