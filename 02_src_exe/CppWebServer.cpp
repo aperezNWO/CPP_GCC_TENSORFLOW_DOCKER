@@ -5,7 +5,10 @@
 
     g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp -o cpp_web_server.exe -mconsole -lws2_32
 
-  
+    g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp -o cpp_web_server.exe -mconsole -lws2_32
+    
+    g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp -Iinclude -Llib -ltensorflow -o cpp_web_server.exe -mconsole -lws2_32
+    
     // LINUX -- DOCKER (NO .EXE EXTENSION FOR DOCKER!!!)
     	// EDIT DOCKER FILE TO ADD NEEDED FILES
 	
@@ -20,8 +23,8 @@
 */
 
 #include "include/httplib.h"
-#include "include/Algorithm.h"
-//#include "include/tesseractApp.h"
+//#include "include/Algorithm.h"
+#include "include/tensorFlowApp.h"
 #include <iostream>
 #include <vector>
 #include <string>

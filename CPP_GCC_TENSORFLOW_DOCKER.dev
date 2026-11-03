@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;8;0;0;0
-UnitCount=27
+UnitCount=28
 
 [VersionInfo]
 Major=1
@@ -144,16 +144,6 @@ CompileCpp=1
 Folder=02_src_exe/__test
 Compile=0
 Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit28]
-FileName=02_src_exe\Algorithm.cpp
-CompileCpp=1
-Folder=02_src_exe
-Compile=1
-Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
@@ -530,6 +520,16 @@ FileName=02_src_exe\lib\Algorithm.dll
 Folder=02_src_exe/lib
 Compile=0
 Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit28]
+FileName=02_src_exe\tictactoe.cpp
+CompileCpp=1
+Folder=02_src_exe
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

@@ -29,6 +29,7 @@ git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.2]" -m"1) CPP WEB S
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.3]" -m"1) DOCKER REMOTE IMPLEMENTATION"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.4]" -m"1) LEGACY CODE INTEGRATION"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.5]" -m"1) LEGACY CODE INTEGRATION"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.6]" -m"1) DLL TESTING FIX"
 git branch -M main
 git remote add origin https://github.com/aperezNWO/CPP_GCC_TENSORFLOW_DOCKER.git
 git push -u origin main

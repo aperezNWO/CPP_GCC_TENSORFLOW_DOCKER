@@ -17,7 +17,7 @@ g++ -std=c++20 -I"include" -L"lib" -shared -m64 -o "__dist/TensorFlowAppCPP.dll"
 
 */
 
-#include "../include/tensorFlowApp.h"
+#include "include/tensorFlowApp.h"
 
 //
 TensorFlowApp::TensorFlowApp(): Algorithm(false)
