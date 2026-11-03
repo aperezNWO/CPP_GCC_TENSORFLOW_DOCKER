@@ -8,7 +8,11 @@
 #include "tictactoe.h"
 #include "LinearRegression.h"
 
-#define DLL_EXPORT extern "C" __declspec(dllexport) __stdcall
+#ifdef _WIN32
+    #define DLL_EXPORT extern "C" __declspec(dllexport) __stdcall
+#else
+    #define DLL_EXPORT extern "C" __attribute__((visibility("default")))
+#endif
 
 using namespace std;
 

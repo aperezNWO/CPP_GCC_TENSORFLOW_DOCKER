@@ -2,6 +2,8 @@
 		     STRATEGY
 ////////////////////////////////////////////////////////////////
 
+-- [_] DOCKER WITH CMAKE
+
 -- [_] curl - TEST DLL local CON PARAMETROS.
 
 -- [_] curl - compilacion local.

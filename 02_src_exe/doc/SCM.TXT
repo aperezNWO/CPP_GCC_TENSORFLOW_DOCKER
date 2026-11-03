@@ -101,7 +101,7 @@ docker push apereznwogmail/cpp_gcc_tensorflow_docker:latest
 
 -- tensorflow.dll exeeds git storage
 git add * 
-git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.6]" -m"1) DLL TESTING FIX"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.6]" -m"1) DOCKER WITH TENSORFLOW LIB"
 git push
 git pull	
 
