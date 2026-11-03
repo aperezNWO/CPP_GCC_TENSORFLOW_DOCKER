@@ -21,7 +21,7 @@
 // ----------------------------
 
 enum AIMode {
-    EXPERT      = 0,
+    EXPERT      = 0, // C++ NEURAL NETWORK
     CREATIVE    = 1,
     MINIMAX     = 2,
     RANDOM      = 3,

@@ -2,6 +2,8 @@
 		     STRATEGY
 ////////////////////////////////////////////////////////////////
 
+-- [_] curl - TEST DLL local CON PARAMETROS.
+
 -- [_] curl - compilacion local.
 
 -- [_] curl - dpcker local.

@@ -27,6 +27,8 @@ git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.0]" -m"1) initial c
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.1]" -m"1) IMPORT FROM CPP_GCC_TEMPLATE_DOCKER"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.2]" -m"1) CPP WEB SERVER IMPLEMENTATION"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.3]" -m"1) DOCKER REMOTE IMPLEMENTATION"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.4]" -m"1) LEGACY CODE INTEGRATION"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.5]" -m"1) LEGACY CODE INTEGRATION"
 git branch -M main
 git remote add origin https://github.com/aperezNWO/CPP_GCC_TENSORFLOW_DOCKER.git
 git push -u origin main
@@ -98,7 +100,7 @@ docker push apereznwogmail/cpp_gcc_tensorflow_docker:latest
 
 -- tensorflow.dll exeeds git storage
 git add * 
-git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.4]" -m"1) LEGACY CODE INTEGRATION"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.6]" -m"1) DLL TESTING FIX"
 git push
 git pull	
 

@@ -35,15 +35,22 @@ struct TicTacToeResultOnline {
     int historyCount;
 };
 
+enum AIMode {
+    EXPERT      = 0, // C++ NEURAL NETWORK
+    CREATIVE    = 1,
+    MINIMAX     = 2,
+    RANDOM      = 3,
+    TENSORFLOW  = 4  // ← Placeholder
+};
 
 typedef const char* (*GetTensorFlowAPIVersionFunc)();  // Define function pointer type
 typedef const char* (*GetTensorFlowAPPVersionFunc)();  // Define function pointer type
 typedef const char* (*GetCPPSTDVersionFunc)();         // Define function pointer type
 
 typedef const char* (*GetStringFunc)();
-typedef bool (*PlayTTTFunc)(TicTacToeResultOnline*);
 
-
+// DLL_EXPORT bool PlayTicTacToeGameWithHistory(TicTacToeResultOnline* result, int aiMode, double temperature) 
+typedef bool (*PlayTTTFunc)(TicTacToeResultOnline* result,int aiMode, double temperature);
 
 // print board history
 void printBoard(const int* board) {
@@ -155,7 +162,8 @@ int main() {
     ///////////////////////////////////////////////////
     // === New Function: PlayTicTacToeGame ===
     ///////////////////////////////////////////////////
-    
+    // FIRMA DE DLL
+    // DLL_EXPORT bool PlayTicTacToeGameWithHistory(TicTacToeResultOnline* result, int aiMode, double temperature) 
     PlayTTTFunc PlayTicTacToeGame = (PlayTTTFunc)GetProcAddress(hDLL, "PlayTicTacToeGameWithHistory");
     if (!PlayTicTacToeGame) {
         printf("Could not locate 'PlayTicTacToeGameWithHistory'\n");
@@ -164,8 +172,12 @@ int main() {
     }
 
     do {
+    	//
         TicTacToeResultOnline result{};
-        if (!PlayTicTacToeGame(&result)) {
+        int    p_aiMode      = AIMode::TENSORFLOW;
+		double p_temperature = 0.0f;
+        // tictactoe.h     bool RunTicTacToeSelfPlay(TicTacToeResultOnline& result, int aiMode, double temperature) 
+        if (!PlayTicTacToeGame(&result,p_aiMode,p_temperature)) {
             std::cerr << "Game execution failed.\n";
             continue;
         }
@@ -174,8 +186,9 @@ int main() {
         std::cout << "\n=== REPLAYING GAME: X vs O ===\n";
 
         for (int step = 0; step < result.historyCount; ++step) {
-            system("cls");
-
+        	//
+  			system("cls");
+			//
             std::cout << "\n=== MOVE " << step << " ===\n";
             printBoard(result.history[step]);
 
