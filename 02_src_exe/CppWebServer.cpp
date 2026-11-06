@@ -253,8 +253,56 @@ int CppWebServerApp::Run()
 	            });
 	
 			*/
+			/*
 			std::stringstream ss;
 			ss << "{\"success\": " << (boolResponse ? "true" : "false") << "}";
+			jsonResponse = ss.str();*/
+			
+std::stringstream ss;
+			ss << "{";
+			
+			// 1. finalBoard array (fixed size 9)
+			ss << "\"finalBoard\":[";
+			for (int i = 0; i < 9; ++i) {
+				ss << result->finalBoard[i];
+				if (i < 8) ss << ",";
+			}
+			ss << "],";
+
+			// 2. moves array (use moveCount or up to 9)
+			ss << "\"moves\":[";
+			int maxMoves = (result->moveCount < 9) ? result->moveCount : 9;
+			for (int i = 0; i < maxMoves; ++i) {
+				ss << result->moves[i];
+				if (i < maxMoves - 1) ss << ",";
+			}
+			ss << "],";
+
+			// 3. winner string (mapping: 1 -> "X", -1 -> "O", default -> "Draw")
+			std::string winnerStr = "Draw";
+			if (result->winner == 1) winnerStr = "X";
+			else if (result->winner == -1) winnerStr = "O";
+			ss << "\"winner\":\"" << winnerStr << "\",";
+
+			// 4. Counts
+			ss << "\"moveCount\":" << result->moveCount << ",";
+			ss << "\"historyCount\":" << result->historyCount << ",";
+
+			// 5. history array of arrays (bounded by historyCount, max 10)
+			ss << "\"history\":[";
+			int maxHistory = (result->historyCount < 10) ? result->historyCount : 10;
+			for (int i = 0; i < maxHistory; ++i) {
+				ss << "[";
+				for (int j = 0; j < 9; ++j) {
+					ss << result->history[i][j];
+					if (j < 8) ss << ",";
+				}
+				ss << "]";
+				if (i < maxHistory - 1) ss << ",";
+			}
+			ss << "]";
+
+			ss << "}";
 			jsonResponse = ss.str();
 			   
 	 	} catch (const std::exception& e) {
