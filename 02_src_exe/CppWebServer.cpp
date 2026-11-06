@@ -1,29 +1,19 @@
 /*
 
     // WINDOWS
-
-
-    g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp -o cpp_web_server.exe -mconsole -lws2_32
-
-    g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp -o cpp_web_server.exe -mconsole -lws2_32
-    
     g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp -Iinclude -Llib -ltensorflow -o cpp_web_server.exe -mconsole -lws2_32
     
     // LINUX -- DOCKER (NO .EXE EXTENSION FOR DOCKER!!!)
     	// EDIT DOCKER FILE TO ADD NEEDED FILES
 	
-   			 COPY --from=builder /app/Algorithm.ini /app/Algorithm.ini
+   			 COPY --from=builder /app/tensorflow.ini /app/tensorflow.ini
 			 COPY --from=builder /app/cpp_web_server /app/cpp_web_server
         // COPY C++ COMMAND TO DOCKER FILE	
 			 RUN  <COMMAND_LINE>		 
-        g++ -std=c++17 -O3 CppWebServer.cpp -I.  -o cpp_web_server -lpthread 
-
-        g++ -std=c++23 -O3 CppWebServer.cpp Algorithm.cpp tesseractDll.cpp -I. -Iinclude -o cpp_web_server -lpthread -ltesseract -llept
 
 */
 
 #include "include/httplib.h"
-//#include "include/Algorithm.h"
 #include "include/tensorFlowApp.h"
 #include <iostream>
 #include <vector>
@@ -73,12 +63,12 @@ CppWebServerApp::CppWebServerApp()
 {	
 	//
 	this->endpointDictionary = {
-	    {"HEALTH_ENDPOINT"            , {"/health"                     , "Print all endpoints"}},
-	    {"PING_ENDPOINT"              , {"/zero"                       , "Render workaround"}},
-	    {"APP_VERSION_ENDPOINT"       , {"/getAppVersion"              , "Get Application Version"}},
-	    {"STD_VERSION_ENDPOINT"       , {"/getSTDVersion"              , "Get Standard C++ Version"}},
-	    {"SERVER_VERSION_ENDPOINT"    , {"/getServerVersion"           , "Get Http Server Version"}},
-	    //{"TESSERACT_VERSION_ENDPOINT"    , {"/api/ocr/getAPIVersion"   , "Get Tesseract API Version"}},
+	    {"HEALTH_ENDPOINT"             , {"/health"                        , "Print all endpoints"}},
+	    {"PING_ENDPOINT"               , {"/zero"                          , "Render workaround"}},
+	    {"APP_VERSION_ENDPOINT"        , {"/getAppVersion"                 , "Get Application Version"}},
+	    {"STD_VERSION_ENDPOINT"        , {"/getSTDVersion"                 , "Get Standard C++ Version"}},
+	    {"SERVER_VERSION_ENDPOINT"     , {"/getServerVersion"              , "Get Http Server Version"}},
+	    {"TENSORFLOW_VERSION_ENDPOINT" , {"/api/tensorflow/getAPIVersion"  , "Get Tensorflow API Version"}},
 	    //{"TESSERACT_UPLOAD_ENDPOINT"     , {"/api/ocr/upload"          , "Upload image from html form via HTTP POST"}},    
 	    //{"TESSERACT_OCR_IMAGE_ENDPOINT"  , {"/api/ocr/getImage"        , "UNITARY TEST"}},       
 	};
@@ -185,18 +175,18 @@ int CppWebServerApp::Run()
             res.status = 200;
     });
     
-    /*
     // Get API Version
-    svr.Get(endpointDictionary["TESSERACT_VERSION_ENDPOINT"].endpointName.c_str(), [](const httplib::Request&, httplib::Response& res) {
+    svr.Get(endpointDictionary["TENSORFLOW_VERSION_ENDPOINT"].endpointName.c_str(), [](const httplib::Request&, httplib::Response& res) {
   		  	//
-		    std::unique_ptr<TesseractApp> uniquePtr = std::make_unique<TesseractApp>();
+		    std::unique_ptr<TensorFlowApp> uniquePtr = std::make_unique<TensorFlowApp>();
 			//
-    		std::string jsonResponse  = uniquePtr->GetTesseractVersion(); 
+    		std::string jsonResponse  = uniquePtr->GetTensorFlowAPIVersion(); 
     		//
             res.set_content(jsonResponse, "application/json");
             res.status = 200;
     });
-    
+
+	/*    
     // UNIT TEST 
     svr.Get(endpointDictionary["TESSERACT_OCR_IMAGE_ENDPOINT"].endpointName.c_str(), [](const httplib::Request&, httplib::Response& res) {
    	    //
