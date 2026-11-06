@@ -63,14 +63,13 @@ CppWebServerApp::CppWebServerApp()
 {	
 	//
 	this->endpointDictionary = {
-	    {"HEALTH_ENDPOINT"             , {"/health"                        , "Print all endpoints"}},
-	    {"PING_ENDPOINT"               , {"/zero"                          , "Render workaround"}},
-	    {"APP_VERSION_ENDPOINT"        , {"/getAppVersion"                 , "Get Application Version"}},
-	    {"STD_VERSION_ENDPOINT"        , {"/getSTDVersion"                 , "Get Standard C++ Version"}},
-	    {"SERVER_VERSION_ENDPOINT"     , {"/getServerVersion"              , "Get Http Server Version"}},
-	    {"TENSORFLOW_VERSION_ENDPOINT" , {"/api/tensorflow/getAPIVersion"  , "Get Tensorflow API Version"}},
-	    //{"TESSERACT_UPLOAD_ENDPOINT"     , {"/api/ocr/upload"          , "Upload image from html form via HTTP POST"}},    
-	    //{"TESSERACT_OCR_IMAGE_ENDPOINT"  , {"/api/ocr/getImage"        , "UNITARY TEST"}},       
+	    {"HEALTH_ENDPOINT"                        , {"/health"                        , "Print all endpoints"}},
+	    {"PING_ENDPOINT"                          , {"/zero"                          , "Render workaround"}},
+	    {"APP_VERSION_ENDPOINT"                   , {"/getAppVersion"                 , "Get Application Version"}},
+	    {"STD_VERSION_ENDPOINT"                   , {"/getSTDVersion"                 , "Get Standard C++ Version"}},
+	    {"SERVER_VERSION_ENDPOINT"                , {"/getServerVersion"              , "Get Http Server Version"}},
+	    {"TENSORFLOW_VERSION_ENDPOINT"            , {"/api/tensorflow/getAPIVersion"  , "Get Tensorflow API Version"}},
+	    {"TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"     , {"/api/tictactoe/play"            , "Auto Play TicTacToe with a.i."}},    
 	};
 	//
 	this->cppWebServerVersion = this->GetCPPHttpVersion();
@@ -186,43 +185,87 @@ int CppWebServerApp::Run()
             res.status = 200;
     });
 
-	/*    
-    // UNIT TEST 
-    svr.Get(endpointDictionary["TESSERACT_OCR_IMAGE_ENDPOINT"].endpointName.c_str(), [](const httplib::Request&, httplib::Response& res) {
+    // TIC TAC TOE PLAY
+    svr.Get(endpointDictionary["TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
    	    //
-	    std::unique_ptr<TesseractApp> uniquePtr = std::make_unique<TesseractApp>();
+		TicTacToeResultOnline* result = new TicTacToeResultOnline(); 
+		int    aiMode            = 1;
+		bool   hasTemperature    = false;
+        double temperature       = 0.0;
+        std::string jsonResponse = "";
 		
+		// Check and parse aiMode from query string
+	    if (req.has_param("aiMode")) {
+	        try {
+	            //
+				aiMode = std::stoi(req.get_param_value("aiMode"));
+	            //
+	            std::cout << "aiMode: " << aiMode << std::endl;
+	        } catch (const std::exception& e) {
+	            std::cout << "[Error occurred] " << e.what() << std::endl;	
+	        }
+	    }
+
+	    // Check and parse temperature from query string
+	    if (req.has_param("temperature")) {
+	        try {
+	            temperature = std::stod(req.get_param_value("temperature"));
+	            hasTemperature = true;
+	            std::cout << "temperature: " << temperature << std::endl;
+	        } catch (const std::exception& e) {
+	            std::cout << "[Error occurred] " << e.what() << std::endl;    
+	        }
+	    }
+    
+    	try {
+		  
+		     //
+			double temp = hasTemperature ? temperature : ((aiMode == 1) ? 1.5 : 0.1);
+	
+			//
+			bool boolResponse = RunTicTacToeSelfPlay(*result, aiMode, temp);
+			//
+			/*
+	
+	            if (!TicTacToeNative.TryPlayGame(aiMode, temp, out var nativeResult))
+	            {
+	                return StatusCode(500, new { error = "Failed to run AI game." });
+	            }
+	
+	            // ✅ Use fixed blocks to safely extract arrays
+	            var finalBoard = CopyArray(nativeResult.finalBoard);
+	            var moves = CopyMoves(nativeResult.moves, nativeResult.moveCount);
+	            var history = ExtractHistory(nativeResult.history, nativeResult.historyCount);
+	
+	            return Ok(new
+	            {
+	                finalBoard,
+	                moves,
+	                winner = nativeResult.winner switch
+	                {
+	                    1 => "X",
+	                    -1 => "O",
+	                    _ => "Draw"
+	                },
+	                moveCount = nativeResult.moveCount,
+	                historyCount = nativeResult.historyCount,
+	                history
+	            });
+	
+			*/
+			std::stringstream ss;
+			ss << "{\"success\": " << (boolResponse ? "true" : "false") << "}";
+			jsonResponse = ss.str();
+			   
+	 	} catch (const std::exception& e) {
+	        std::cout << "[Error occurred] " << e.what() << std::endl;	
+	    }
+
 		//
-		std::string jsonResponse  = uniquePtr->GetTesseractOcrOutput();
-        res.set_content(jsonResponse, "application/json");
-        res.status = 200;
+		res.set_content(jsonResponse, "application/json");
+		res.status = 200;
     });
     
-	// UPLOAD IMAGE FROM HTML FORM VIA POST
-    svr.Post("TESSERACT_UPLOAD_ENDPOINT", [](const httplib::Request& req, httplib::Response& res) {
-	    if (req.body.empty()) {
-	        res.status = 400;
-	        res.set_content("{\"error\": \"No image data received\"}", "application/json");
-	        return;
-	    }
-	
-	    // req.body holds the raw binary bytes of the uploaded image
-	    std::string savedPath = "/app/uploaded_image.png"; 
-	    std::ofstream outfile(savedPath, std::ios::binary);
-	    outfile.write(req.body.data(), req.body.size());
-	    outfile.close();
-	
-	    // Pass savedPath using .c_str() to match const char*
-	    std::unique_ptr<TesseractApp> uniquePtr = std::make_unique<TesseractApp>();
-	    
-	    // Convert std::string to const char* via .c_str() and capture result
-	    std::string jsonResponse = uniquePtr->GetTesseractOcrOutputPath(savedPath.c_str());
-	    
-        res.set_content(jsonResponse, "application/json");
-        res.status = 200;
-	});
-	*/
-	
 	//
     int port = 8080;
     if (getenv("PORT")) {
