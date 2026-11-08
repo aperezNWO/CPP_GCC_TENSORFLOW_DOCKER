@@ -101,10 +101,10 @@ docker push apereznwogmail/cpp_gcc_tensorflow_docker:latest
 -- [_] docker.io/apereznwogmail/cpp_gcc_tensorflow_docker:latest
 
 // REMOTE TEST
--- [_] https://fractal-cpp-server-latest-hh6n.onrender.com/GenerateRandomVertex_CPP?p_vertexSize=9&p_sourcePoint=0
+-- [_] https://cpp-gcc-tensorflow-docker-latest-vx5k.onrender.com/api/tictactoe/play?aiMode=4&temperature=1.5
 
 // CHRONJOB
--- [_] https://fractal-cpp-server-latest-hh6n.onrender.com/zero
+-- [_] https://cpp-gcc-tensorflow-docker-latest-vx5k.onrender.com/zero
 
 ////////////////////////////////////////////////////////////////
 // GIT -- SAVE CHANGES

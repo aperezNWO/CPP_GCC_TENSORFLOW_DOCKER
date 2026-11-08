@@ -4,7 +4,7 @@ CursorRow=10
 TopLine=10
 LeftChar=1
 [Editors]
-Order=6,5
+Order=5
 Focused=5
 [Editor_2]
 CursorCol=7
@@ -27,9 +27,9 @@ CursorRow=10
 TopLine=7
 LeftChar=1
 [Editor_5]
-CursorCol=8
-CursorRow=324
-TopLine=309
+CursorCol=3
+CursorRow=5
+TopLine=1
 LeftChar=1
 [Editor_9]
 CursorCol=18
@@ -47,9 +47,9 @@ CursorRow=1
 TopLine=1
 LeftChar=1
 [Editor_6]
-CursorCol=47
-CursorRow=101
-TopLine=95
+CursorCol=1
+CursorRow=25
+TopLine=22
 LeftChar=1
 [Editor_26]
 CursorCol=1
