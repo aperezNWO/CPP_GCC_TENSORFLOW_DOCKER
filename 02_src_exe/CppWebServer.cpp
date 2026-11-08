@@ -220,26 +220,26 @@ int CppWebServerApp::Run()
 	*/
     // TIC TAC TOE PLAY
     // http://localhost:8080/api/tictactoe/play?aiMode=4&temperature=1.5
-    svr.Get(endpointDictionary["TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
-   	    //
-		TicTacToeResultOnline* result = new TicTacToeResultOnline(); 
-		int    aiMode            = 1;
-		bool   hasTemperature    = false;
-        double temperature       = 0.0;
-        std::string jsonResponse = "";
-		
-		// Check and parse aiMode from query string
+	svr.Get(endpointDictionary["TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
+	    
+	    // 1. Allocate using std::make_unique
+	    auto result = std::make_unique<TicTacToeResultOnline>(); 
+	    
+	    int    aiMode            = 1;
+	    bool   hasTemperature    = false;
+	    double temperature       = 0.0;
+	    std::string jsonResponse = "";
+	    
+	    // Check and parse aiMode from query string
 	    if (req.has_param("aiMode")) {
 	        try {
-	            //
-				aiMode = std::stoi(req.get_param_value("aiMode"));
-	            //
+	            aiMode = std::stoi(req.get_param_value("aiMode"));
 	            std::cout << "aiMode: " << aiMode << std::endl;
 	        } catch (const std::exception& e) {
-	            std::cout << "[Error occurred] " << e.what() << std::endl;	
+	            std::cout << "[Error occurred] " << e.what() << std::endl;    
 	        }
 	    }
-
+	
 	    // Check and parse temperature from query string
 	    if (req.has_param("temperature")) {
 	        try {
@@ -250,79 +250,67 @@ int CppWebServerApp::Run()
 	            std::cout << "[Error occurred] " << e.what() << std::endl;    
 	        }
 	    }
-    
-    	try {
-		  
+	  
+	    try {
+	        double temp = hasTemperature ? temperature : ((aiMode == 1) ? 1.5 : 0.1);
+	        
+	        // 2. Dereference the smart pointer using *result when passing to function
+	        bool boolResponse = RunTicTacToeSelfPlay(*result, aiMode, temp);
+	        
+	        std::stringstream ss;
+	        ss << "{";
+	        
+	        // 3. Access members using the arrow operator -> just like a raw pointer
+	        ss << "\"finalBoard\":[";
+	        for (int i = 0; i < 9; ++i) {
+	            ss << result->finalBoard[i];
+	            if (i < 8) ss << ",";
+	        }
+	        ss << "],";
+	        
+	        ss << "\"moves\":[";
+	        int maxMoves = (result->moveCount < 9) ? result->moveCount : 9;
+	        for (int i = 0; i < maxMoves; ++i) {
+	            ss << result->moves[i];
+	            if (i < maxMoves - 1) ss << ",";
+	        }
+	        ss << "],";
+	        
+	        std::string winnerStr = "Draw";
+	        if (result->winner == 1) winnerStr = "X";
+	        else if (result->winner == -1) winnerStr = "O";
+	        ss << "\"winner\":\"" << winnerStr << "\",";
+	        
+	        ss << "\"moveCount\":" << result->moveCount << ",";
+	        ss << "\"historyCount\":" << result->historyCount << ",";
+	        
+	        ss << "\"history\":[";
+	        int maxHistory = (result->historyCount < 10) ? result->historyCount : 10;
+	        for (int i = 0; i < maxHistory; ++i) {
+	            ss << "[";
+	            for (int j = 0; j < 9; ++j) {
+	                ss << result->history[i][j];
+	                if (j < 8) ss << ",";
+	            }
+	            ss << "]";
+	            if (i < maxHistory - 1) ss << ",";
+	        }
+	        ss << "]";
+	        
+	        ss << "}";
+	        jsonResponse = ss.str();
 	
-			//
-			double temp       = hasTemperature ? temperature : ((aiMode == 1) ? 1.5 : 0.1);
-			//
-			bool boolResponse = RunTicTacToeSelfPlay(*result, aiMode, temp);
-			//
-			/*
-			std::stringstream ss;
-			ss << "{\"success\": " << (boolResponse ? "true" : "false") << "}";
-			jsonResponse = ss.str();
-			*/
-
-			// TRANSLATE THE ORIGINAL .net core code response to c++
-			std::stringstream ss;
-			ss << "{";
-			
-			// 1. finalBoard array (fixed size 9)
-			ss << "\"finalBoard\":[";
-			for (int i = 0; i < 9; ++i) {
-				ss << result->finalBoard[i];
-				if (i < 8) ss << ",";
-			}
-			ss << "],";
-			
-			// 2. moves array (use moveCount or up to 9)
-			ss << "\"moves\":[";
-			int maxMoves = (result->moveCount < 9) ? result->moveCount : 9;
-			for (int i = 0; i < maxMoves; ++i) {
-				ss << result->moves[i];
-				if (i < maxMoves - 1) ss << ",";
-			}
-			ss << "],";
-			
-			// 3. winner string (mapping: 1 -> "X", -1 -> "O", default -> "Draw")
-			std::string winnerStr = "Draw";
-			if (result->winner == 1) winnerStr = "X";
-			else if (result->winner == -1) winnerStr = "O";
-			ss << "\"winner\":\"" << winnerStr << "\",";
-			
-			// 4. Counts
-			ss << "\"moveCount\":" << result->moveCount << ",";
-			ss << "\"historyCount\":" << result->historyCount << ",";
-			
-			// 5. history array of arrays (bounded by historyCount, max 10)
-			ss << "\"history\":[";
-			int maxHistory = (result->historyCount < 10) ? result->historyCount : 10;
-			for (int i = 0; i < maxHistory; ++i) {
-				ss << "[";
-				for (int j = 0; j < 9; ++j) {
-					ss << result->history[i][j];
-					if (j < 8) ss << ",";
-				}
-				ss << "]";
-				if (i < maxHistory - 1) ss << ",";
-			}
-			ss << "]";
-			
-			ss << "}";
-			jsonResponse = ss.str();
-	
-		   
-	 	} catch (const std::exception& e) {
-	        std::cout << "[Error occurred] " << e.what() << std::endl;	
+	    } catch (const std::exception& e) {
+	        std::cout << "[Error occurred] " << e.what() << std::endl;    
 	    }
-
-		//
-		res.set_content(jsonResponse, "application/json");
-		res.status = 200;
-    });
-    
+	
+	    // No need for 'delete result;' here! 
+	    // std::unique_ptr automatically cleans up when it goes out of scope.
+	
+	    res.set_content(jsonResponse, "application/json");
+	    res.status = 200;
+	});
+  
   
 	//
     int port = 8080;

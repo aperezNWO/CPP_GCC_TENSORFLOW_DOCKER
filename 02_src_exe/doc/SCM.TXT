@@ -14,8 +14,18 @@
 
     g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp -o cpp_web_server.exe -mconsole -lws2_32
     
+    g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp -Iinclude -Llib -ltensorflow -o cpp_web_server.exe -mconsole -lws2_32
+  
     move *.exe __test
-    
+ 
+    cd __test
+	
+	cpp_web_sever.exe
+	
+	http://localhost:8080/api/tictactoe/play?aiMode=4&temperature=1.5
+	
+	{"finalBoard":[0,-1,1,0,-1,-1,1,-1,1],"moves":[5,8,4,2,7,6,1],"winner":"O","moveCount":7,"historyCount":8,"history":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,-1,0,0,0],[0,0,0,0,0,-1,0,0,1],[0,0,0,0,-1,-1,0,0,1],[0,0,1,0,-1,-1,0,0,1],[0,0,1,0,-1,-1,0,-1,1],[0,0,1,0,-1,-1,1,-1,1],[0,-1,1,0,-1,-1,1,-1,1]]}
+	   
 ////////////////////////////////////////////////////////////////
 // GIT -- INITIAL CONFIG
 ////////////////////////////////////////////////////////////////
