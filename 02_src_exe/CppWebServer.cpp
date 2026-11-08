@@ -184,8 +184,42 @@ int CppWebServerApp::Run()
             res.set_content(jsonResponse, "application/json");
             res.status = 200;
     });
+	//
+	/*
+			    
+		https://tensorflownetcore64.tryasp.net/api/tictactoe/play?aiMode=4&temperature=1.5
 
+	    {"finalBoard":[0,1,-1,0,-1,-1,1,1,-1],"moves":[8,7,4,1,2,6,5],"winner":"O","moveCount":7,"historyCount":8,"history":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,-1],[0,0,0,0,0,0,0,1,-1],[0,0,0,0,-1,0,0,1,-1],[0,1,0,0,-1,0,0,1,-1],[0,1,-1,0,-1,0,0,1,-1],[0,1,-1,0,-1,0,1,1,-1],[0,1,-1,0,-1,-1,1,1,-1]]}
+        
+		// .NET CORE DLL IMPOORT ORGINAL CODE
+        if (!TicTacToeNative.TryPlayGame(aiMode, temp, out var nativeResult))
+        {
+            return StatusCode(500, new { error = "Failed to run AI game." });
+        }
+
+        // ✅ Use fixed blocks to safely extract arrays
+        var finalBoard = CopyArray(nativeResult.finalBoard);
+        var moves      = CopyMoves(nativeResult.moves, nativeResult.moveCount);
+        var history    = ExtractHistory(nativeResult.history, nativeResult.historyCount);
+
+        return Ok(new
+        {
+            finalBoard,
+            moves,
+            winner = nativeResult.winner switch
+            {
+                1  => "X",
+                -1 => "O",
+                _  => "Draw"
+            },
+            moveCount = nativeResult.moveCount,
+            historyCount = nativeResult.historyCount,
+            history
+        });
+	
+	*/
     // TIC TAC TOE PLAY
+    // http://localhost:8080/api/tictactoe/play?aiMode=4&temperature=1.5
     svr.Get(endpointDictionary["TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
    	    //
 		TicTacToeResultOnline* result = new TicTacToeResultOnline(); 
@@ -219,46 +253,20 @@ int CppWebServerApp::Run()
     
     	try {
 		  
-		     //
-			double temp = hasTemperature ? temperature : ((aiMode == 1) ? 1.5 : 0.1);
 	
+			//
+			double temp       = hasTemperature ? temperature : ((aiMode == 1) ? 1.5 : 0.1);
 			//
 			bool boolResponse = RunTicTacToeSelfPlay(*result, aiMode, temp);
 			//
 			/*
-	
-	            if (!TicTacToeNative.TryPlayGame(aiMode, temp, out var nativeResult))
-	            {
-	                return StatusCode(500, new { error = "Failed to run AI game." });
-	            }
-	
-	            // ✅ Use fixed blocks to safely extract arrays
-	            var finalBoard = CopyArray(nativeResult.finalBoard);
-	            var moves = CopyMoves(nativeResult.moves, nativeResult.moveCount);
-	            var history = ExtractHistory(nativeResult.history, nativeResult.historyCount);
-	
-	            return Ok(new
-	            {
-	                finalBoard,
-	                moves,
-	                winner = nativeResult.winner switch
-	                {
-	                    1 => "X",
-	                    -1 => "O",
-	                    _ => "Draw"
-	                },
-	                moveCount = nativeResult.moveCount,
-	                historyCount = nativeResult.historyCount,
-	                history
-	            });
-	
-			*/
-			/*
 			std::stringstream ss;
 			ss << "{\"success\": " << (boolResponse ? "true" : "false") << "}";
-			jsonResponse = ss.str();*/
-			
-std::stringstream ss;
+			jsonResponse = ss.str();
+			*/
+
+			// TRANSLATE THE ORIGINAL .net core code response to c++
+			std::stringstream ss;
 			ss << "{";
 			
 			// 1. finalBoard array (fixed size 9)
@@ -268,7 +276,7 @@ std::stringstream ss;
 				if (i < 8) ss << ",";
 			}
 			ss << "],";
-
+			
 			// 2. moves array (use moveCount or up to 9)
 			ss << "\"moves\":[";
 			int maxMoves = (result->moveCount < 9) ? result->moveCount : 9;
@@ -277,17 +285,17 @@ std::stringstream ss;
 				if (i < maxMoves - 1) ss << ",";
 			}
 			ss << "],";
-
+			
 			// 3. winner string (mapping: 1 -> "X", -1 -> "O", default -> "Draw")
 			std::string winnerStr = "Draw";
 			if (result->winner == 1) winnerStr = "X";
 			else if (result->winner == -1) winnerStr = "O";
 			ss << "\"winner\":\"" << winnerStr << "\",";
-
+			
 			// 4. Counts
 			ss << "\"moveCount\":" << result->moveCount << ",";
 			ss << "\"historyCount\":" << result->historyCount << ",";
-
+			
 			// 5. history array of arrays (bounded by historyCount, max 10)
 			ss << "\"history\":[";
 			int maxHistory = (result->historyCount < 10) ? result->historyCount : 10;
@@ -301,10 +309,11 @@ std::stringstream ss;
 				if (i < maxHistory - 1) ss << ",";
 			}
 			ss << "]";
-
+			
 			ss << "}";
 			jsonResponse = ss.str();
-			   
+	
+		   
 	 	} catch (const std::exception& e) {
 	        std::cout << "[Error occurred] " << e.what() << std::endl;	
 	    }
@@ -314,6 +323,7 @@ std::stringstream ss;
 		res.status = 200;
     });
     
+  
 	//
     int port = 8080;
     if (getenv("PORT")) {
