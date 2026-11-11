@@ -26,7 +26,7 @@
 	
 	{"finalBoard":[0,-1,1,0,-1,-1,1,-1,1],"moves":[5,8,4,2,7,6,1],"winner":"O","moveCount":7,"historyCount":8,"history":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,-1,0,0,0],[0,0,0,0,0,-1,0,0,1],[0,0,0,0,-1,-1,0,0,1],[0,0,1,0,-1,-1,0,0,1],[0,0,1,0,-1,-1,0,-1,1],[0,0,1,0,-1,-1,1,-1,1],[0,-1,1,0,-1,-1,1,-1,1]]}
 	
-	curl -X POST "http://localhost:8080/api/tensorflow/predict?missionNumberToPredict=18"
+    curl.exe http://localhost:8080/api/linearregression/predict?missionNumberToPredict=18
 	   
 ////////////////////////////////////////////////////////////////
 // GIT -- INITIAL CONFIG
@@ -78,7 +78,7 @@ curl.exe http://localhost:8080/getSTDVersion
 
 curl.exe http://localhost:8080/getServerVersion
 
-curl -X POST "http://localhost:8080/api/tensorflow/predict" -H "Content-Type: application/json" -d "{\"missionNumberToPredict\": 18}"
+curl.exe http://localhost:8080/api/linearregression/predict?missionNumberToPredict=18
 
 ////////////////////////////////////////////////////////////////
 //  DOCKER
@@ -117,7 +117,7 @@ docker push apereznwogmail/cpp_gcc_tensorflow_docker:latest
 
 -- tensorflow.dll exeeds git storage
 git add * 
-git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.7]" -m"1) TENSORFLOW TICTACTOE A.I. ENDPOINT"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.8]" -m"1) LINEAR REGRESSION END POINT"
 git push
 git pull	
 

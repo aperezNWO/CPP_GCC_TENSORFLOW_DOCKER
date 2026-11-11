@@ -70,7 +70,7 @@ CppWebServerApp::CppWebServerApp()
 	    {"SERVER_VERSION_ENDPOINT"                , {"/getServerVersion"              , "Get Http Server Version"}},
 	    {"TENSORFLOW_VERSION_ENDPOINT"            , {"/api/tensorflow/getAPIVersion"  , "Get Tensorflow API Version"}},
 	    {"TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"     , {"/api/tictactoe/play"            , "Auto Play TicTacToe with a.i."}},    
-	    {"LINEAR_REGRESSION_PREDICT_ENDPOINT"     , {"/api/tensorflow/predict"        , "[POST] Predict the next hypothetic Apollo Mission data"}},    
+	    {"LINEAR_REGRESSION_PREDICT_ENDPOINT"     , {"/api/linearregression/predict"  , "Predict the next hypothetic Apollo Mission data"}},    
 	};
 	//
 	this->cppWebServerVersion = this->GetCPPHttpVersion();
@@ -278,45 +278,52 @@ int CppWebServerApp::Run()
 	});
  
  
-     // PREDICT THE NEXT HYPOTHETIC APOLLO MISISION USILNG LINERAR REGRESSION
-    svr.Post(endpointDictionary["LINEAR_REGRESSION_PREDICT_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
-
-			//
-    		std::string jsonResponse  = ""; 
-    		double predictedTotalTime = 0.0;
-    		
-    		//
-		    if (req.has_param("missionNumberToPredict")) {
-		        try {
-		        	//
-		            double missionNumberToPredict = std::stod(req.get_param_value("missionNumberToPredict"));
-		            
-	            	//
-				    LinearRegression *linearRegression = new LinearRegression();
-				    
-				    //
-				    predictedTotalTime          = linearRegression->predict(missionNumberToPredict);
-    
-    				//
-					std::cout << "predictedTotalTime: " << predictedTotalTime << std::endl;
-					
-					//
-				    std::stringstream ss;
-			        ss << "{";	        
-				        ss << "\"predictedTotalTime\":";
-				        ss << "\"" << predictedTotalTime << "\"";
-				    ss << "}";
-			        jsonResponse = ss.str();
-					
-		        } catch (const std::exception& e) {
-		            std::cout << "[Error occurred] " << e.what() << std::endl;    
-		        }
-		    }
-
-    		//
-            res.set_content(jsonResponse, "application/json");
-            res.status = 200;
-    }); 
+	// PREDICT THE NEXT HYPOTHETIC APOLLO MISISION USILNG LINERAR REGRESSION
+	// https://tensorflownetcore64.tryasp.net/api/linearregression/predict?missionNumberToPredict=18
+	// {"input_mission_number":18,"predicted_total_time_hours":302.2483870967742,"predicted_duration_days":12.593682795698925}
+	svr.Get(endpointDictionary["LINEAR_REGRESSION_PREDICT_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
+	    std::string jsonResponse = "{}"; // Default fallback
+	    
+	    if (req.has_param("missionNumberToPredict")) {
+	        try {
+	            // 1. Parse input mission number from query parameters
+	            double missionNumberToPredict = std::stod(req.get_param_value("missionNumberToPredict"));
+	            int inputMissionNumber = static_cast<int>(missionNumberToPredict);
+	            
+	            // 2. Run linear regression prediction using a smart pointer for memory safety
+	            auto linearRegression = std::make_unique<LinearRegression>();
+	            double predictedTotalTimeHours = linearRegression->predict(missionNumberToPredict);
+	            
+	            // 3. Calculate derived metrics
+	            double predictedDurationDays = predictedTotalTimeHours / 24.0;
+	            
+	            std::cout << "predictedTotalTimeHours: " << predictedTotalTimeHours << std::endl;
+	            
+	            // 4. Build the structured JSON response with precision formatting
+	            std::stringstream ss;
+	            ss << std::fixed << std::setprecision(15);
+	            
+	            ss << "{";
+	            ss << "\"input_mission_number\":" << inputMissionNumber << ",";
+	            ss << "\"predicted_total_time_hours\":" << predictedTotalTimeHours << ",";
+	            ss << "\"predicted_duration_days\":" << predictedDurationDays;
+	            ss << "}";
+	            
+	            jsonResponse = ss.str();
+	            res.status = 200;
+	
+	        } catch (const std::exception& e) {
+	            std::cout << "[Error occurred] " << e.what() << std::endl;
+	            jsonResponse = "{\"error\": \"" + std::string(e.what()) + "\"}";
+	            res.status = 500;
+	        }
+	    } else {
+	        jsonResponse = "{\"error\": \"Missing parameter 'missionNumberToPredict'\"}";
+	        res.status = 400;
+	    }
+	
+	    res.set_content(jsonResponse, "application/json");
+	});
   
 	//
     int port = 8080;
