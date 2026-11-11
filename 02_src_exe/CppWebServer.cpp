@@ -70,6 +70,7 @@ CppWebServerApp::CppWebServerApp()
 	    {"SERVER_VERSION_ENDPOINT"                , {"/getServerVersion"              , "Get Http Server Version"}},
 	    {"TENSORFLOW_VERSION_ENDPOINT"            , {"/api/tensorflow/getAPIVersion"  , "Get Tensorflow API Version"}},
 	    {"TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"     , {"/api/tictactoe/play"            , "Auto Play TicTacToe with a.i."}},    
+	    {"LINEAR_REGRESSION_PREDICT_ENDPOINT"     , {"/api/tensorflow/predict"        , "[POST] Predict the next hypothetic Apollo Mission data"}},    
 	};
 	//
 	this->cppWebServerVersion = this->GetCPPHttpVersion();
@@ -184,40 +185,6 @@ int CppWebServerApp::Run()
             res.set_content(jsonResponse, "application/json");
             res.status = 200;
     });
-	//
-	/*
-			    
-		https://tensorflownetcore64.tryasp.net/api/tictactoe/play?aiMode=4&temperature=1.5
-
-	    {"finalBoard":[0,1,-1,0,-1,-1,1,1,-1],"moves":[8,7,4,1,2,6,5],"winner":"O","moveCount":7,"historyCount":8,"history":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,-1],[0,0,0,0,0,0,0,1,-1],[0,0,0,0,-1,0,0,1,-1],[0,1,0,0,-1,0,0,1,-1],[0,1,-1,0,-1,0,0,1,-1],[0,1,-1,0,-1,0,1,1,-1],[0,1,-1,0,-1,-1,1,1,-1]]}
-        
-		// .NET CORE DLL IMPOORT ORGINAL CODE
-        if (!TicTacToeNative.TryPlayGame(aiMode, temp, out var nativeResult))
-        {
-            return StatusCode(500, new { error = "Failed to run AI game." });
-        }
-
-        // ✅ Use fixed blocks to safely extract arrays
-        var finalBoard = CopyArray(nativeResult.finalBoard);
-        var moves      = CopyMoves(nativeResult.moves, nativeResult.moveCount);
-        var history    = ExtractHistory(nativeResult.history, nativeResult.historyCount);
-
-        return Ok(new
-        {
-            finalBoard,
-            moves,
-            winner = nativeResult.winner switch
-            {
-                1  => "X",
-                -1 => "O",
-                _  => "Draw"
-            },
-            moveCount = nativeResult.moveCount,
-            historyCount = nativeResult.historyCount,
-            history
-        });
-	
-	*/
     // TIC TAC TOE PLAY
     // http://localhost:8080/api/tictactoe/play?aiMode=4&temperature=1.5
 	svr.Get(endpointDictionary["TENSORFLOW_TICTACTOE_PLAY_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
@@ -296,7 +263,6 @@ int CppWebServerApp::Run()
 	            if (i < maxHistory - 1) ss << ",";
 	        }
 	        ss << "]";
-	        
 	        ss << "}";
 	        jsonResponse = ss.str();
 	
@@ -310,7 +276,47 @@ int CppWebServerApp::Run()
 	    res.set_content(jsonResponse, "application/json");
 	    res.status = 200;
 	});
-  
+ 
+ 
+     // PREDICT THE NEXT HYPOTHETIC APOLLO MISISION USILNG LINERAR REGRESSION
+    svr.Post(endpointDictionary["LINEAR_REGRESSION_PREDICT_ENDPOINT"].endpointName.c_str(), [](const httplib::Request& req, httplib::Response& res) {
+
+			//
+    		std::string jsonResponse  = ""; 
+    		double predictedTotalTime = 0.0;
+    		
+    		//
+		    if (req.has_param("missionNumberToPredict")) {
+		        try {
+		        	//
+		            double missionNumberToPredict = std::stod(req.get_param_value("missionNumberToPredict"));
+		            
+	            	//
+				    LinearRegression *linearRegression = new LinearRegression();
+				    
+				    //
+				    predictedTotalTime          = linearRegression->predict(missionNumberToPredict);
+    
+    				//
+					std::cout << "predictedTotalTime: " << predictedTotalTime << std::endl;
+					
+					//
+				    std::stringstream ss;
+			        ss << "{";	        
+				        ss << "\"predictedTotalTime\":";
+				        ss << "\"" << predictedTotalTime << "\"";
+				    ss << "}";
+			        jsonResponse = ss.str();
+					
+		        } catch (const std::exception& e) {
+		            std::cout << "[Error occurred] " << e.what() << std::endl;    
+		        }
+		    }
+
+    		//
+            res.set_content(jsonResponse, "application/json");
+            res.status = 200;
+    }); 
   
 	//
     int port = 8080;

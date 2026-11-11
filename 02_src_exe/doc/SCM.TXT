@@ -25,6 +25,8 @@
 	http://localhost:8080/api/tictactoe/play?aiMode=4&temperature=1.5
 	
 	{"finalBoard":[0,-1,1,0,-1,-1,1,-1,1],"moves":[5,8,4,2,7,6,1],"winner":"O","moveCount":7,"historyCount":8,"history":[[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,-1,0,0,0],[0,0,0,0,0,-1,0,0,1],[0,0,0,0,-1,-1,0,0,1],[0,0,1,0,-1,-1,0,0,1],[0,0,1,0,-1,-1,0,-1,1],[0,0,1,0,-1,-1,1,-1,1],[0,-1,1,0,-1,-1,1,-1,1]]}
+	
+	curl -X POST "http://localhost:8080/api/tensorflow/predict?missionNumberToPredict=18"
 	   
 ////////////////////////////////////////////////////////////////
 // GIT -- INITIAL CONFIG
@@ -41,6 +43,7 @@ git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.4]" -m"1) LEGACY CO
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.5]" -m"1) LEGACY CODE INTEGRATION"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.6]" -m"1) DLL TESTING FIX"
 git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.6]" -m"1) DOCKER WITH TENSORFLOW LIB"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.7]" -m"1) TENSORFLOW TICTACTOE A.I. ENDPOINT"
 git branch -M main
 git remote add origin https://github.com/aperezNWO/CPP_GCC_TENSORFLOW_DOCKER.git
 git push -u origin main
@@ -74,6 +77,8 @@ curl.exe http://localhost:8080/getAppVersion
 curl.exe http://localhost:8080/getSTDVersion
 
 curl.exe http://localhost:8080/getServerVersion
+
+curl -X POST "http://localhost:8080/api/tensorflow/predict" -H "Content-Type: application/json" -d "{\"missionNumberToPredict\": 18}"
 
 ////////////////////////////////////////////////////////////////
 //  DOCKER
