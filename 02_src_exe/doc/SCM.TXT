@@ -117,7 +117,7 @@ docker push apereznwogmail/cpp_gcc_tensorflow_docker:latest
 
 -- tensorflow.dll exeeds git storage
 git add * 
-git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.9]" -m"1) SUDOKU END POINTS"
+git commit -m "[Application CPP_GCC_TENSORFLOW_DOCKER] v[1.0.9]" -m"1) ALGORITHM END POINTS"
 git push
 git pull	
 
