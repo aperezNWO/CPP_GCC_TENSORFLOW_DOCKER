@@ -43,10 +43,10 @@ using namespace std;
 #pragma once
 
 // Define the enum
-enum class FormatType {
-    HTML = 1,  // Represents HTML format
-    JSON = 2   // Represents JSON format
-};
+//enum class FormatType {
+//    HTML = 1,  // Represents HTML format
+//    JSON = 2   // Represents JSON format
+//};
 
 //
 class Algorithm

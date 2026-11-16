@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;8;0;0;0
-UnitCount=28
+UnitCount=38
 
 [VersionInfo]
 Major=1
@@ -61,7 +61,7 @@ BuildCmd=
 CompileCpp=1
 
 [Unit13]
-FileName=02_src_exe\include\tensorFlowApp.h
+FileName=02_src_exe\include\LinearRegression.h
 Folder=02_src_exe/include
 Compile=1
 Link=1
@@ -71,16 +71,6 @@ BuildCmd=
 CompileCpp=1
 
 [Unit18]
-FileName=02_src_exe\include\TetrisEngineStateless.h
-Folder=02_src_exe/include
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-CompileCpp=1
-
-[Unit19]
 FileName=02_src_exe\include\tictactoe.h
 Folder=02_src_exe/include
 Compile=1
@@ -90,16 +80,17 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
-[Unit21]
-FileName=02_src_exe\lib\Algorithm.ini
+[Unit19]
+FileName=02_src_exe\lib\Algorithm.dll
 Folder=02_src_exe/lib
 Compile=0
 Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
-[Unit22]
+[Unit21]
 FileName=02_src_exe\lib\tensorflow.dll
 Folder=02_src_exe/lib
 Compile=0
@@ -108,17 +99,16 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit24]
-FileName=02_src_exe\test_tensorFlowAppCPP_dll.cpp
-Folder=02_src_exe
-Compile=1
-Link=1
+[Unit22]
+FileName=02_src_exe\lib\tensorflow.ini
+Folder=02_src_exe/lib
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-CompileCpp=1
 
-[Unit25]
+[Unit24]
 FileName=02_src_exe\__test\Algorithm.dll
 Folder=02_src_exe/__test
 Compile=0
@@ -128,17 +118,17 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
 
-[Unit26]
+[Unit25]
 FileName=02_src_exe\__test\Algorithm.ini
-CompileCpp=1
 Folder=02_src_exe/__test
 Compile=0
 Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
-[Unit27]
+[Unit26]
 FileName=02_src_exe\__test\test_tensorFlowApp_dll.exe
 CompileCpp=1
 Folder=02_src_exe/__test
@@ -148,27 +138,27 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit23]
-FileName=02_src_exe\lib\tensorflow.ini
+[Unit27]
+FileName=02_src_exe\tictactoe.cpp
 CompileCpp=1
-Folder=02_src_exe/lib
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit14]
-FileName=02_src_exe\include\LinearRegression.h
-CompileCpp=1
-Folder=02_src_exe/include
+Folder=02_src_exe
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit15]
+[Unit23]
+FileName=02_src_exe\test_tensorFlowAppCPP_dll.cpp
+CompileCpp=1
+Folder=02_src_exe
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit14]
 FileName=02_src_exe\tensorFlowApp.cpp
 CompileCpp=1
 Folder=02_src_exe
@@ -178,8 +168,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit15]
+FileName=02_src_exe\tictactoe_tf_model.zip
+CompileCpp=1
+Folder=02_src_exe
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit17]
-FileName=02_src_exe\include\TetrisEngine.h
+FileName=02_src_exe\include\TetrisEngineStateless.h
 Folder=02_src_exe/include
 Compile=1
 Link=1
@@ -189,7 +189,7 @@ BuildCmd=
 CompileCpp=1
 
 [Unit29]
-FileName=02_src_exe\CppWebServer.cpp
+FileName=02_src_exe\TFileManager.cpp
 CompileCpp=1
 Folder=02_src_exe
 Compile=1
@@ -199,63 +199,69 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit31]
-FileName=02_src_exe\doc\STRATEGY.txt
-Folder=02_src_exe/doc
-Compile=0
-Link=0
+FileName=02_src_exe\SortBenchMark.cpp
+Folder=02_src_exe
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
 [Unit32]
-FileName=02_src_exe\__test\cpp_web_server.exe
-Folder=02_src_exe/__test
-Compile=0
-Link=0
+FileName=02_src_exe\SortBenchMark.h
+Folder=02_src_exe
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
 [Unit33]
-FileName=02_src_exe\__test\tensorflow.ini
-Folder=02_src_exe/__test
-Compile=0
-Link=0
+FileName=02_src_exe\Dijkstra.cpp
+Folder=02_src_exe
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
 [Unit34]
-FileName=02_src_exe\tensorflow.ini
+FileName=02_src_exe\Dijkstra.h
 Folder=02_src_exe
-Compile=0
-Link=0
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
 [Unit30]
-FileName=02_src_exe\doc\SCM.TXT
-Folder=02_src_exe/doc
-Compile=0
-Link=0
+FileName=02_src_exe\TFileManager.h
+Folder=02_src_exe
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
 [Unit35]
-FileName=02_src_exe\Dockerfile
+FileName=02_src_exe\RegExManager.cpp
 Folder=02_src_exe
-Compile=0
-Link=0
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
 
 [Unit36]
-FileName=02_src_exe\include\tensorFlowApp.h
+FileName=02_src_exe\RegExManager.h
 CompileCpp=1
-Folder=02_src_exe/include
+Folder=02_src_exe
 Compile=1
 Link=1
 Priority=1000
@@ -263,17 +269,17 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit37]
-FileName=02_src_exe\include\LinearRegression.h
+FileName=02_src_exe\CdCatalog.xml
 CompileCpp=1
-Folder=02_src_exe/include
-Compile=1
-Link=1
+Folder=02_src_exe
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
 [Unit38]
-FileName=02_src_exe\tensorFlowApp.cpp
+FileName=02_src_exe\FractalEngine.cpp
 CompileCpp=1
 Folder=02_src_exe
 Compile=1
@@ -471,15 +477,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=02_src_exe\__test\cpp_web_server.exe
-Folder=02_src_exe/__test
-Compile=0
-Link=0
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit10]
 FileName=02_src_exe\__test\tensorflow.ini
 Folder=02_src_exe/__test
 Compile=0
@@ -488,7 +485,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit11]
+[Unit10]
 FileName=02_src_exe\tensorflow.ini
 Folder=02_src_exe
 Compile=0
@@ -497,7 +494,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit12]
+[Unit11]
 FileName=02_src_exe\Dockerfile
 Folder=02_src_exe
 Compile=0
@@ -506,17 +503,28 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit16]
-FileName=02_src_exe\tictactoe_tf_model.zip
-Folder=02_src_exe
-Compile=0
-Link=0
+[Unit12]
+FileName=02_src_exe\include\tensorFlowApp.h
+Folder=02_src_exe/include
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=1
+
+[Unit16]
+FileName=02_src_exe\include\TetrisEngine.h
+Folder=02_src_exe/include
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+CompileCpp=1
 
 [Unit20]
-FileName=02_src_exe\lib\Algorithm.dll
+FileName=02_src_exe\lib\Algorithm.ini
 Folder=02_src_exe/lib
 Compile=0
 Link=0
@@ -525,7 +533,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit28]
-FileName=02_src_exe\tictactoe.cpp
+FileName=02_src_exe\Sudoku.cpp
 CompileCpp=1
 Folder=02_src_exe
 Compile=1

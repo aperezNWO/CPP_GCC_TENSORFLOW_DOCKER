@@ -16,12 +16,12 @@ RUN wget -q https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflo
 
 # Copy headers and source code files
 COPY include/ ./include/
-COPY CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp ./
-COPY tensorflow.ini Algorithm.ini ./ 
+COPY CppWebServer.cpp TFileManager.cpp TFileManager.h Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp Sudoku.cpp SortBenchMark.cpp SortBenchMark.h Dijkstra.cpp Dijkstra.h RegExManager.cpp RegExManager.h FractalEngine.cpp ./
+COPY tensorflow.ini Algorithm.ini CdCatalog.xml ./ 
 COPY tictactoe_tf_model/ ./tictactoe_tf_model/
 
 # Compile the project for Linux
-RUN g++ -std=c++17 -O3 CppWebServer.cpp Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp \
+RUN g++ -std=c++17 -O3 CppWebServer.cpp TFileManager.cpp Algorithm.cpp tensorFlowApp.cpp tictactoe.cpp Sudoku.cpp SortBenchMark.cpp Dijkstra.cpp  RegExManager.cpp FractalEngine.cpp \
     -Iinclude -L/usr/local/lib -ltensorflow \
     -o cpp_web_server \
     -lpthread
@@ -41,6 +41,7 @@ RUN ldconfig
 COPY --from=builder /app/cpp_web_server /app/cpp_web_server
 COPY --from=builder /app/tensorflow.ini /app/tensorflow.ini
 COPY --from=builder /app/Algorithm.ini /app/Algorithm.ini
+COPY --from=builder /app/CdCatalog.xml /app/CdCatalog.xml
 COPY --from=builder /app/tictactoe_tf_model /app/tictactoe_tf_model
 
 EXPOSE 8080
